@@ -54,8 +54,9 @@ export default function Login() {
     );
   };
 
+  console.log(error);
   const isSubmitAvailable = Object.entries(error)
-    .filter(([key, value]) => key !== 'submit')
+    .filter(([name]) => name !== 'submit')
     .every(([key, value]) => value !== null && value?.isError === false);
 
   return (
