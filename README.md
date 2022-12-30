@@ -27,3 +27,7 @@ client
 
 - queryClient를 가져오는 utils 함수 작성
 - fetcher 함수 구현
+
+### 4. scss
+
+- app style 폴더 갖추기

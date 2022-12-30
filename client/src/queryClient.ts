@@ -1,6 +1,6 @@
 import { QueryClient } from 'react-query';
 
-type AnyOBJ = {
+export type AnyOBJ = {
   [key: string]: any;
 };
 
@@ -59,8 +59,9 @@ export const fetcher = async ({
   try {
     const res = await fetch(url, options);
     const json = await res.json();
+    return json;
   } catch (error) {
-    console.error(error);
+    console.error('ERROR', error);
   }
 };
 
