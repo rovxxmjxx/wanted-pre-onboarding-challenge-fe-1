@@ -1,12 +1,12 @@
-import type { Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
+import type { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
-import * as userService from "../services/userService";
-import { createError } from "../utils/responseUtils";
-import { loginValidator, USER_VALIDATION_ERRORS } from "../utils/validator";
-import { createToken } from "../utils/authorizeUtils";
+import * as userService from '../services/userService';
+import { createError } from '../utils/responseUtils';
+import { loginValidator, USER_VALIDATION_ERRORS } from '../utils/validator';
+import { createToken } from '../utils/authorizeUtils';
 
-import type { UserInput } from "../types/users";
+import type { UserInput } from '../types/users';
 
 // 로그인
 export const login = async (req: Request, res: Response) => {
@@ -23,7 +23,7 @@ export const login = async (req: Request, res: Response) => {
 
   if (user) {
     return res.status(StatusCodes.OK).send({
-      message: "성공적으로 로그인 했습니다",
+      message: '성공적으로 로그인 했습니다',
       token: createToken(email),
     });
   } else {
@@ -51,7 +51,7 @@ export const signUp = async (req: Request, res: Response) => {
     await userService.createUser({ email, password });
 
     return res.status(StatusCodes.OK).send({
-      message: "계정이 성공적으로 생성되었습니다",
+      message: '계정이 성공적으로 생성되었습니다',
       token: createToken(email),
     });
   }

@@ -5,4 +5,4 @@ export interface User {
   createdAt: string;
 }
 
-export type UserInput = Pick<User, "email" | "password">;
+export type UserInput = Pick<User, 'email' | 'password'>;

@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
-export const JWT_TOKEN_SALT = "jwtTokenSalt";
+export const JWT_TOKEN_SALT = 'jwtTokenSalt';
 
 export const createToken = (value: string) => {
   return jwt.sign(value, JWT_TOKEN_SALT);

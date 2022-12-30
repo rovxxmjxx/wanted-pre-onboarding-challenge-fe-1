@@ -1,11 +1,11 @@
-import { Low, JSONFile } from "lowdb";
-import fs from "fs/promises";
-import { join } from "path";
-import { nanoid } from "nanoid";
-import path from "path";
+import { Low, JSONFile } from 'lowdb';
+import fs from 'fs/promises';
+import { join } from 'path';
+import { nanoid } from 'nanoid';
+import path from 'path';
 
-import type { Todo } from "../types/todos";
-import type { User } from "../types/users";
+import type { Todo } from '../types/todos';
+import type { User } from '../types/users';
 
 const __dirname = path.resolve();
 
@@ -18,14 +18,15 @@ export let db: Low<Data>;
 
 export const initDatabase = async () => {
   // Use JSON file for storage
-  const dbFolderPath = join(__dirname, "./db");
-  const filePath = join(__dirname, "./db/db.json");
+  const dbFolderPath = join(__dirname, './db');
+  const filePath = join(__dirname, './db/db.json');
   const dbFolder = await fs.readdir(dbFolderPath).catch(() => void 0);
   const file = await fs.readFile(filePath).catch(() => void 0);
 
   if (!dbFolder) {
     await fs.mkdir(dbFolderPath);
   }
+
   if (!file) {
     await fs.writeFile(filePath, JSON.stringify({ todos: [], users: [] }));
   }
