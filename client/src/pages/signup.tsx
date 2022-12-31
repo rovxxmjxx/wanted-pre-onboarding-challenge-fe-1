@@ -40,9 +40,8 @@ export default function Singup() {
       {
         onSuccess: (data) => {
           if (data.token) {
-            navigate('/', { replace: true });
+            navigate('/login', { replace: true });
           } else {
-            console.log(data.details);
             setError({
               email: {
                 isError: true,
