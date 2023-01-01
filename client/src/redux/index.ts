@@ -1,7 +1,8 @@
 import { Store, combineReducers, createStore } from 'redux';
 import todo from './todo';
+import auth from './auth';
 
-const rootReducer = combineReducers({ todo });
+const rootReducer = combineReducers({ auth, todo });
 
 export default rootReducer;
 

@@ -14,7 +14,6 @@ export function Input(
   { type, label, name, placeholder, onChange, error: { isError, message } }: InputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
-  console.log(isError);
   return (
     <div className="input-wrapper">
       <label>

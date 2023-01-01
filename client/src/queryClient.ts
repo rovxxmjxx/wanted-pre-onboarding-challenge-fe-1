@@ -32,11 +32,13 @@ export const fetcher = async ({
   path,
   body,
   params,
+  token,
 }: {
   method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
   path: string;
   body?: AnyOBJ;
   params?: AnyOBJ;
+  token: string;
 }) => {
   let url = `${BASE_URL}${path}`;
   const options: RequestInit = {
@@ -44,6 +46,7 @@ export const fetcher = async ({
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': BASE_URL,
+      Authorization: token,
     },
   };
 

@@ -1,10 +1,11 @@
 import React from 'react';
-
-export type Todo = {
-  id: string;
-  content: string;
-};
+import { Todo } from '../../redux/todo';
 
 export default function TodoItem({ item }: { item: Todo }) {
-  return <li>{item.content}</li>;
+  return (
+    <li className="todo-item">
+      <p>{item.title}</p>
+      <p>{item.content}</p>
+    </li>
+  );
 }

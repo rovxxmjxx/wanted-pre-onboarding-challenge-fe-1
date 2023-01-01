@@ -7,7 +7,9 @@ import { useMutation } from 'react-query';
 import { QUERYKEYS, fetcher } from '../queryClient';
 import { Link, useNavigate } from 'react-router-dom';
 import useInput from '../utils/useInput';
-import { executeToken } from '../utils/executeToken';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux';
+import { saveToken } from '../redux/auth';
 
 export type ErrorType = {
   [key: string]: { isError: boolean; message?: string } | null;
@@ -43,8 +45,11 @@ export default function Signup() {
     },
   });
 
+  const token = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+
   const { mutate: loginMutate } = useMutation(QUERYKEYS.AUTH, (body: { email: string; password: string }) =>
-    fetcher({ method: 'POST', path: '/users/create', body })
+    fetcher({ method: 'POST', path: '/users/create', body, token: token || '' })
   );
   const navigate = useNavigate();
   const handleSubmit = (e: SyntheticEvent) => {
@@ -60,8 +65,8 @@ export default function Signup() {
       {
         onSuccess: (data) => {
           if (data.token) {
-            executeToken(data.token);
-            navigate('/', { replace: true });
+            dispatch(saveToken(data.token));
+            navigate('/todos', { replace: true });
           } else {
             onEmailError(true, '이메일 주소 혹은 비밀번호를 다시 확인해주세요');
             onPasswordError(true);
@@ -78,13 +83,10 @@ export default function Signup() {
     !passwordError?.isError;
 
   useEffect(() => {
-    const token = executeToken();
     if (token) {
-      navigate('/', { replace: true });
-    } else {
-      navigate('/login');
+      navigate('/todos', { replace: true });
     }
-  }, []);
+  }, [token]);
 
   return (
     <AuthLayout pageTitle="회원가입">

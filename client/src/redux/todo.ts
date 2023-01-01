@@ -1,11 +1,11 @@
 const UPDATE_TODOS = 'cart/MUTATE_CART' as const;
 
-export const updateTodos = ({ todos }: { todos: any[] }) => ({ type: UPDATE_TODOS, payload: todos });
+export const updateTodos = (todos: Todo[]) => ({ type: UPDATE_TODOS, payload: todos });
 
-type Todo = {
+export type Todo = {
   id: string;
+  title: string;
   content: string;
-  isDone: boolean;
   createdAt: string;
   updatedAt: string;
 };

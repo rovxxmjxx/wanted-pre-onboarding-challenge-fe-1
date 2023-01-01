@@ -1,6 +1,7 @@
 import { createRef, useRef, useState } from 'react';
 
 type Input = {
+  type?: 'input' | 'textarea';
   name: string;
   value: any;
   error: {
@@ -40,7 +41,7 @@ const useInput = (input: Input) => {
     setError((prev) => ({ ...prev, isError: value, message }));
   };
 
-  return { name: input.name, ref, onChange, onClear, error, onError };
+  return { name: input.name, value: ref?.current?.value, ref, onChange, onClear, error, onError };
 };
 
 export default useInput;
