@@ -48,8 +48,9 @@
       }
 
       input:focus {
-        outline: none;
-        background-color: transparent;
+        outline-color: #3daaff;
+        // outline: none;
+        // background-color: transparent;
       }
 
       input::placeholder {

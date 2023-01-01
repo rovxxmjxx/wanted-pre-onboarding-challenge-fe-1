@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useEffect } from 'react';
 
 import AuthLayout from '../layouts/authLayout';
 import Input from '../components/auth/Input';
@@ -10,6 +10,23 @@ import useInput from '../utils/useInput';
 
 export type ErrorType = {
   [key: string]: { isError: boolean; message?: string } | null;
+};
+
+export const executeToken = (() => {
+  let token = localStorage.getItem('token');
+
+  return (newToken?: string) => {
+    if (newToken) {
+      localStorage.setItem('token', newToken);
+      token = localStorage.getItem('token');
+    }
+
+    return token;
+  };
+})();
+
+export const clearToken = () => {
+  localStorage.removeItem('token');
 };
 
 export default function Login() {
@@ -59,6 +76,7 @@ export default function Login() {
       {
         onSuccess: (data) => {
           if (data.token) {
+            executeToken(data.token);
             navigate('/', { replace: true });
           } else {
             onEmailError(true, '이메일 주소 혹은 비밀번호를 다시 확인해주세요');
@@ -74,6 +92,17 @@ export default function Login() {
     passwordRef?.current?.value.length !== 0 &&
     !emailError?.isError &&
     !passwordError?.isError;
+
+  useEffect(() => {
+    emailRef?.current?.focus();
+
+    const token = executeToken();
+
+    if (token) navigate('/', { replace: true });
+    else {
+      navigate('/login');
+    }
+  }, []);
 
   return (
     <AuthLayout pageTitle="로그인">

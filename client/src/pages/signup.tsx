@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useEffect } from 'react';
 
 import AuthLayout from '../layouts/authLayout';
 import Input from '../components/auth/Input';
@@ -7,6 +7,7 @@ import { useMutation } from 'react-query';
 import { QUERYKEYS, fetcher } from '../queryClient';
 import { Link, useNavigate } from 'react-router-dom';
 import useInput from '../utils/useInput';
+import { executeToken } from './login';
 
 export type ErrorType = {
   [key: string]: { isError: boolean; message?: string } | null;
@@ -59,7 +60,8 @@ export default function Signup() {
       {
         onSuccess: (data) => {
           if (data.token) {
-            navigate('/login', { replace: true });
+            executeToken(data.token);
+            navigate('/', { replace: true });
           } else {
             onEmailError(true, '이메일 주소 혹은 비밀번호를 다시 확인해주세요');
             onPasswordError(true);
@@ -74,6 +76,15 @@ export default function Signup() {
     passwordRef?.current?.value.length !== 0 &&
     !emailError?.isError &&
     !passwordError?.isError;
+
+  useEffect(() => {
+    const token = executeToken();
+    if (token) {
+      navigate('/', { replace: true });
+    } else {
+      navigate('/login');
+    }
+  }, []);
 
   return (
     <AuthLayout pageTitle="회원가입">
