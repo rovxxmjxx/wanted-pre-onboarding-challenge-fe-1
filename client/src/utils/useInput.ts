@@ -1,16 +1,16 @@
-import { createRef, useState } from 'react';
+import { createRef, useRef, useState } from 'react';
 
 type Input = {
   name: string;
   value: any;
   error: {
-    regex: RegExp;
+    regex?: RegExp;
     isError: boolean | null;
     message?: string | null;
   };
 };
 const useInput = (input: Input) => {
-  const ref = createRef<HTMLInputElement>();
+  const ref = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<{
     isError: boolean | null;
     message?: string | null;
@@ -23,7 +23,7 @@ const useInput = (input: Input) => {
       return;
     }
 
-    const isValid = input.error.regex.test(value);
+    const isValid = input.error.regex?.test(value);
 
     if (isValid) {
       setError({ isError: false });
@@ -33,14 +33,14 @@ const useInput = (input: Input) => {
   };
 
   const onClear = () => {
-    ref?.current?.value === '';
+    ref!.current!.value = '';
   };
 
   const onError = (value: boolean | null, message?: string) => {
     setError((prev) => ({ ...prev, isError: value, message }));
   };
 
-  return { ref, onChange, onClear, error, onError };
+  return { name: input.name, ref, onChange, onClear, error, onError };
 };
 
 export default useInput;
