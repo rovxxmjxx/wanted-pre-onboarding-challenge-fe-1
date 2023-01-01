@@ -1,4 +1,4 @@
-import React, { useRef, SyntheticEvent, useState } from 'react';
+import React, { SyntheticEvent } from 'react';
 
 import AuthLayout from '../layouts/authLayout';
 import Input from '../components/auth/Input';
@@ -6,32 +6,51 @@ import Button from '../components/auth/Button';
 import { useMutation } from 'react-query';
 import { QUERYKEYS, fetcher } from '../queryClient';
 import { Link, useNavigate } from 'react-router-dom';
+import useInput from '../utils/useInput';
 
 export type ErrorType = {
   [key: string]: { isError: boolean; message?: string } | null;
 };
 
-export default function Singup() {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-
-  const [error, setError] = useState<ErrorType>({
-    email: null,
-    password: null,
-    submit: null,
+export default function Signup() {
+  const {
+    ref: emailRef,
+    error: emailError,
+    onChange: onEmailChange,
+    onError: onEmailError,
+  } = useInput({
+    name: 'email',
+    value: '',
+    error: {
+      regex: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+      isError: false,
+      message: '이메일 형식에 맞는지 확인해주세요.',
+    },
+  });
+  const {
+    ref: passwordRef,
+    error: passwordError,
+    onChange: onPasswordChange,
+    onError: onPasswordError,
+  } = useInput({
+    name: 'password',
+    value: '',
+    error: {
+      regex: /^[A-Za-z0-9._%+-]{8,}$/,
+      isError: false,
+      message: '8글자 이상인지 확인해주세요',
+    },
   });
 
-  const { mutate: loginMutate } = useMutation(
-    QUERYKEYS.AUTH,
-    (body: { email: string; password: string }) =>
-      fetcher({ method: 'POST', path: '/users/create', body })
+  const { mutate: loginMutate } = useMutation(QUERYKEYS.AUTH, (body: { email: string; password: string }) =>
+    fetcher({ method: 'POST', path: '/users/create', body })
   );
   const navigate = useNavigate();
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
+    const email = emailRef?.current?.value;
+    const password = passwordRef?.current?.value;
 
     if (!email || !password) return;
 
@@ -42,24 +61,19 @@ export default function Singup() {
           if (data.token) {
             navigate('/login', { replace: true });
           } else {
-            setError({
-              email: {
-                isError: true,
-              },
-              submit: {
-                isError: true,
-                message: '이미 사용중인 이메일입니다.',
-              },
-            });
+            onEmailError(true, '이메일 주소 혹은 비밀번호를 다시 확인해주세요');
+            onPasswordError(true);
           }
         },
       }
     );
   };
 
-  const isSubmitAvailable = Object.entries(error)
-    .filter(([key, value]) => key !== 'submit')
-    .every(([key, value]) => value !== null && value?.isError === false);
+  const isSubmitAvailable =
+    emailRef?.current?.value.length !== 0 &&
+    passwordRef?.current?.value.length !== 0 &&
+    !emailError?.isError &&
+    !passwordError?.isError;
 
   return (
     <AuthLayout pageTitle="회원가입">
@@ -70,12 +84,9 @@ export default function Singup() {
             label={'이메일'}
             name={'email'}
             ref={emailRef}
+            onChange={onEmailChange}
+            error={emailError}
             placeholder={'example@gmail.com'}
-            validate={{
-              regex: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-              error,
-              setError,
-            }}
           />
           <Input
             type="password"
@@ -83,20 +94,15 @@ export default function Singup() {
             name={'password'}
             placeholder={'8글자 이상'}
             ref={passwordRef}
-            validate={{
-              regex: /^[A-Za-z0-9._%+-]{8,}$/,
-              error,
-              setError,
-            }}
+            onChange={onPasswordChange}
+            error={passwordError}
           />
           <Button title={'로그인'} disabled={!isSubmitAvailable} />
-          {error.submit && (
-            <p className="error-message">{error['submit'].message}</p>
-          )}
+          {emailError.message && <p className="error-message">{emailError.message}</p>}
         </form>
       </div>
       <p className="opposite-link">
-        <Link to="/login">로그인으로 이동하기</Link>
+        <Link to="/login">로그인하러 가기</Link>
       </p>
     </AuthLayout>
   );

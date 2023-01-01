@@ -1,82 +1,29 @@
-import React, {
-  forwardRef,
-  ForwardedRef,
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import React, { forwardRef, ForwardedRef } from 'react';
 import { RiCloseCircleFill, RiCheckboxCircleFill } from 'react-icons/ri';
-
-import { ErrorType } from '../../pages/login';
 
 type InputProps = {
   type: 'text' | 'email' | 'password';
   label: string;
   name: string;
   placeholder: string;
-  validate: {
-    regex: RegExp;
-    error: ErrorType;
-    setError: Dispatch<SetStateAction<ErrorType>>;
-  };
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error: { isError: boolean | null; message?: string | null };
 };
 
 export function Input(
-  { type, label, name, placeholder, validate }: InputProps,
+  { type, label, name, placeholder, onChange, error: { isError, message } }: InputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-
-    if (!value) {
-      validate.setError((prev) => ({
-        ...prev,
-        submit: null,
-        [name]: null,
-      }));
-      return;
-    }
-
-    const isValid = validate?.regex.test(value);
-
-    if (isValid) {
-      validate.setError((prev) => ({
-        ...prev,
-        submit: null,
-        [name]: { isError: false },
-      }));
-    } else {
-      validate.setError((prev) => ({
-        ...prev,
-        submit: null,
-        [name]: { isError: true },
-      }));
-    }
-  };
-
+  console.log(isError);
   return (
     <div className="input-wrapper">
       <label>
         <span className="label-text">{label}</span>
         <div className="input-box">
-          <input
-            type={type}
-            ref={ref}
-            name={name}
-            onChange={onChange}
-            placeholder={placeholder}
-          />
-          {validate.error[name] !== null && (
-            <span
-              className={`validate-icon ${
-                validate.error[name]?.isError ? 'invalid' : 'valid'
-              }`}
-            >
-              {validate.error[name]?.isError ? (
-                <RiCloseCircleFill />
-              ) : (
-                <RiCheckboxCircleFill />
-              )}
+          <input type={type} ref={ref} name={name} onChange={onChange} placeholder={placeholder} />
+          {isError !== null && (
+            <span className={`validate-icon ${isError ? 'invalid' : 'valid'}`}>
+              {isError ? <RiCloseCircleFill /> : <RiCheckboxCircleFill />}
             </span>
           )}
         </div>
