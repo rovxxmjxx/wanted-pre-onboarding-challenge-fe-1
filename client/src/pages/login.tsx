@@ -7,26 +7,9 @@ import { useMutation } from 'react-query';
 import { QUERYKEYS, fetcher } from '../queryClient';
 import { Link, useNavigate } from 'react-router-dom';
 import useInput from '../utils/useInput';
-
+import { executeToken } from '../utils/executeToken';
 export type ErrorType = {
   [key: string]: { isError: boolean; message?: string } | null;
-};
-
-export const executeToken = (() => {
-  let token = localStorage.getItem('token');
-
-  return (newToken?: string) => {
-    if (newToken) {
-      localStorage.setItem('token', newToken);
-      token = localStorage.getItem('token');
-    }
-
-    return token;
-  };
-})();
-
-export const clearToken = () => {
-  localStorage.removeItem('token');
 };
 
 export default function Login() {

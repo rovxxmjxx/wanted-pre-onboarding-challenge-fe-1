@@ -1,4 +1,5 @@
 @import 'auth.scss';
+@import 'todo.scss';
 
 * {
   margin: 0;
@@ -9,4 +10,8 @@
 a {
   text-decoration: none;
   color: inherit;
+}
+
+li {
+  list-style: none;
 }

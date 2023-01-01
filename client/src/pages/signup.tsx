@@ -7,7 +7,7 @@ import { useMutation } from 'react-query';
 import { QUERYKEYS, fetcher } from '../queryClient';
 import { Link, useNavigate } from 'react-router-dom';
 import useInput from '../utils/useInput';
-import { executeToken } from './login';
+import { executeToken } from '../utils/executeToken';
 
 export type ErrorType = {
   [key: string]: { isError: boolean; message?: string } | null;

@@ -1,0 +1,48 @@
+.list-layout {
+  max-width: 800px;
+  margin: auto;
+  padding: 0 20px;
+
+  &__inner {
+    transform: translateY(20%);
+    border: 1px solid #dfdfdf;
+    padding: 20px 40px;
+    min-height: 600px;
+    border-radius: 8px;
+    width: 100%;
+  }
+}
+
+.page-title {
+  font-size: 32px;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.new-todo-form {
+  &__input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dfdfdf;
+    border-radius: 30px;
+    overflow: hidden;
+
+    input {
+      padding: 12px;
+      font-size: 16px;
+      width: 100%;
+      outline: none;
+      border: none;
+    }
+
+    button {
+      width: 50px;
+      padding: 9px 4px 2px;
+      font-size: 26px;
+      background-color: transparent;
+      border: none;
+      color: gray;
+    }
+  }
+}
