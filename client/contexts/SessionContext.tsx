@@ -1,9 +1,9 @@
-import { createContext, useContext, useEffect, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer, useState, SetStateAction } from 'react';
 import { UserType } from '../lib/apis/AuthApi';
 import Token from '../lib/Token';
 import { TOKEN_KEY, USER_KEY } from '../lib/constants/token';
 import { TodoType } from '../lib/apis/TodoApi';
-import { useGetTodos } from '../hooks/TodoQuery';
+import { useGetTodos } from '../components/hooks/todo/TodoQuery';
 
 const SessionContext = createContext<SessionContextType | null>(null);
 
@@ -35,8 +35,8 @@ type ActionType =
 export function reducer(session: SessionType, action: ActionType): SessionType {
   switch (action.type) {
     case 'SET': {
-      const { user, todos } = action.payload;
-      return { ...session, user, todos };
+      const { user, todos, token } = action.payload;
+      return { ...session, user, todos, token };
     }
     case 'LOGIN': {
       const { user, token } = action.payload;
@@ -61,15 +61,13 @@ const SessionProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: todos } = useGetTodos();
 
   const defaultSession: SessionType = {
-    user: user ? JSON.parse(user) : null,
+    user: null,
     todos: [],
-    token,
+    token: null,
     isLoggedIn: !!token,
   };
 
   const [session, dispatch] = useReducer(reducer, defaultSession);
-
-  console.log(session);
 
   const login = ({ email, password, token }: CommonContextType) => {
     Token.saveToken(TOKEN_KEY, token, 60000);

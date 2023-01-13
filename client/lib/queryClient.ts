@@ -1,10 +1,21 @@
 import { QueryClient } from 'react-query';
 
-const getClient = (() => {
+export const getClient = (() => {
   let client: QueryClient | null = null;
 
   return () => {
-    if (!client) client = new QueryClient(); // {defaultOptions} 추가 설정 필요
+    if (!client)
+      client = new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: Infinity,
+            cacheTime: Infinity,
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+          },
+        },
+      });
     return client;
   };
 })();

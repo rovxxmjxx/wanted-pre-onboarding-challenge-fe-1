@@ -7,7 +7,7 @@ import { LoginParams, LoginResponse } from '../lib/apis/AuthApi';
 import { AiOutlineUser, AiOutlineLock } from 'react-icons/ai';
 import Input from '../components/Login/Input';
 import { useRouter } from 'next/router';
-import { useSignUpMutation } from '../hooks/AuthQuery';
+import { useSignUpMutation } from '../components/hooks/auth/AuthQuery';
 import Link from 'next/link';
 
 type FormType = LoginParams;

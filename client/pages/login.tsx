@@ -7,7 +7,7 @@ import { LoginParams, LoginResponse } from '../lib/apis/AuthApi';
 import { AiOutlineUser, AiOutlineLock } from 'react-icons/ai';
 import Input from '../components/Login/Input';
 import { useRouter } from 'next/router';
-import { useLoginMutation } from '../hooks/AuthQuery';
+import { useLoginMutation } from '../components/hooks/auth/AuthQuery';
 import Token from '../lib/Token';
 import { TOKEN_KEY } from '../lib/constants/token';
 import Link from 'next/link';
